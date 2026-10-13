@@ -1,1 +1,260 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff4a8">
+  <meta name="description" content="Kuiz teka-teki dan lawak mesra kanak-kanak. Jom bermain dan gelak bersama!">
+  <title>Jom Gelak! | Kuiz Lawak Kanak-Kanak</title>
+  <style>
+    :root {
+      --ink: #26324a; --pink: #ff719a; --yellow: #ffe66d;
+      --blue: #8bd9f5; --mint: #9be7c4; --purple: #b7a4ff;
+      --paper: #fffdf5; --shadow: 0 8px 0 rgba(38,50,74,.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; padding: 18px;
+      color: var(--ink); font-family: "Trebuchet MS", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 10% 12%, #fff 0 5px, transparent 6px),
+        radial-gradient(circle at 90% 20%, #fff 0 7px, transparent 8px),
+        linear-gradient(145deg, #c8f2ff, #fff0b9 55%, #ffd8e5);
+      display: grid; place-items: center;
+    }
+    .app { width: min(100%, 620px); }
+    .topline { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:0 4px 12px; }
+    .brand { font-weight:1000; letter-spacing:.4px; font-size:1.05rem; }
+    .pill { background:#fff; border:2px solid var(--ink); border-radius:999px; padding:7px 12px; font-weight:800; font-size:.9rem; }
+    .panel { background:var(--paper); border:3px solid var(--ink); border-radius:28px; padding:clamp(20px,5vw,34px); box-shadow:var(--shadow); }
+    .hero { text-align:center; }
+    .mascot { font-size:clamp(4.5rem,18vw,7rem); line-height:1.1; filter:drop-shadow(0 5px 0 rgba(38,50,74,.12)); }
+    h1 { font-size:clamp(2rem,8vw,3.3rem); line-height:1; margin:12px 0; letter-spacing:-1.5px; }
+    h2 { font-size:clamp(1.35rem,5vw,2rem); line-height:1.2; margin:10px 0 18px; }
+    p { line-height:1.55; }
+    .sub { font-size:1.05rem; max-width:390px; margin:0 auto 22px; }
+    .sticker { display:inline-block; background:var(--yellow); border:2px solid var(--ink); border-radius:14px; padding:7px 12px; font-weight:900; transform:rotate(-2deg); }
+    button { font:inherit; cursor:pointer; touch-action:manipulation; }
+    button:focus-visible { outline:4px solid #26324a; outline-offset:3px; }
+    .main-btn { border:3px solid var(--ink); border-radius:18px; background:var(--pink); color:#201d32; font-weight:1000; padding:15px 22px; width:100%; box-shadow:0 5px 0 var(--ink); transition:transform .12s, box-shadow .12s; }
+    .main-btn:active { transform:translateY(4px); box-shadow:0 1px 0 var(--ink); }
+    .secondary { background:var(--blue); margin-top:14px; }
+    .tiny { font-size:.82rem; opacity:.8; margin-top:18px; }
+    .progress-wrap { height:12px; border:2px solid var(--ink); border-radius:999px; background:#fff; overflow:hidden; margin:14px 0 22px; }
+    .progress { height:100%; width:0; background:var(--mint); transition:width .25s ease; }
+    .q-meta { display:flex; justify-content:space-between; gap:10px; align-items:center; font-weight:900; font-size:.9rem; }
+    .question { background:#fff0b9; border:2px dashed var(--ink); border-radius:20px; padding:20px 15px; text-align:center; margin:12px 0 18px; }
+    .q-emoji { font-size:2.5rem; }
+    .answers { display:grid; gap:11px; }
+    .answer { border:2.5px solid var(--ink); border-radius:16px; background:#fff; padding:14px 15px; text-align:left; font-weight:800; min-height:58px; box-shadow:0 3px 0 rgba(38,50,74,.14); }
+    .answer .letter { display:inline-grid; place-items:center; width:30px; height:30px; margin-right:9px; border-radius:10px; background:var(--purple); font-weight:1000; }
+    .answer:nth-child(2) .letter { background:var(--pink); }
+    .answer:nth-child(3) .letter { background:var(--yellow); }
+    .answer:nth-child(4) .letter { background:var(--mint); }
+    .answer:active { transform:translateY(2px); }
+    .answer:disabled { cursor:default; opacity:1; }
+    .answer.correct { background:#c7f7d9; border-color:#16834c; }
+    .answer.wrong { background:#ffd4dc; border-color:#b52b4a; }
+    .feedback { margin-top:16px; padding:14px; border-radius:16px; background:#e8e3ff; border:2px solid var(--ink); font-weight:800; line-height:1.45; }
+    .feedback[hidden] { display:none; }
+    .next { margin-top:15px; background:var(--yellow); }
+    .result { text-align:center; }
+    .score { font-size:3.6rem; font-weight:1000; margin:8px 0; }
+    .result-emoji { font-size:5rem; }
+    .share-note { background:#e4f7ff; padding:12px; border-radius:14px; margin:16px 0; font-size:.92rem; }
+    .hidden { display:none !important; }
+    footer { text-align:center; font-size:.78rem; margin:18px 8px 0; color:#38445a; }
+    @media (min-width:560px) { .answers { grid-template-columns:1fr 1fr; } }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { transition:none !important; } }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="topline">
+      <div class="brand">🌈 JOM GELAK!</div>
+      <div class="pill">Kuiz santai 🎈</div>
+    </div>
 
+    <section id="home" class="panel hero">
+      <div class="mascot" aria-hidden="true">🤪</div>
+      <div class="sticker">CABARAN TEKA-TEKI</div>
+      <h1>Jom Gelak!</h1>
+      <p class="sub">Sedia untuk soalan pelik, jawapan lucu dan gelak sampai senyum lebar?</p>
+      <p>🧠 10 soalan &nbsp; ⭐ Kumpul markah &nbsp; 😆 Lawak mesra kanak-kanak</p>
+      <button id="startBtn" class="main-btn">MULA BERMAIN! 🚀</button>
+      <p class="tiny">Tip: Baca soalan betul-betul. Kadang-kadang jawapan paling mudah yang paling kelakar!</p>
+    </section>
+
+    <section id="quiz" class="panel hidden" aria-live="polite">
+      <div class="q-meta"><span id="counter">SOALAN 1 / 10</span><span id="scorePill" class="pill">⭐ 0 mata</span></div>
+      <div class="progress-wrap" aria-label="Kemajuan kuiz"><div id="progress" class="progress"></div></div>
+      <div class="question">
+        <div id="qEmoji" class="q-emoji" aria-hidden="true">🤔</div>
+        <h2 id="questionText">Soalan akan muncul di sini.</h2>
+      </div>
+      <div id="answers" class="answers"></div>
+      <div id="feedback" class="feedback" role="status" hidden></div>
+      <button id="nextBtn" class="main-btn next hidden">SOALAN SETERUSNYA ➜</button>
+    </section>
+
+    <section id="result" class="panel result hidden" aria-live="polite">
+      <div id="resultEmoji" class="result-emoji" aria-hidden="true">🏆</div>
+      <div class="sticker">MISI SELESAI!</div>
+      <h1 id="resultTitle">Hebat!</h1>
+      <p id="resultText">Keputusan anda.</p>
+      <div id="finalScore" class="score">0/10</div>
+      <p id="rankText"></p>
+      <div class="share-note" id="shareText">Kongsi keputusan dengan keluarga dan kawan.</div>
+      <button id="shareBtn" class="main-btn">KONGSI KEPUTUSAN 📣</button>
+      <button id="restartBtn" class="main-btn secondary">MAIN LAGI 🔁</button>
+    </section>
+    <footer>Dibuat untuk bermain dan belajar bersama. Ingat, gelak dengan kawan, bukan mengejek kawan. 💛</footer>
+  </main>
+
+  <script>
+    "use strict";
+    const questions = [
+      { emoji:"🐟", q:"Ikan apa yang paling rajin?", a:["Ikan bilis","Ikan kerja lebih masa","Ikan emas","Ikan tidur"], correct:1, joke:"Sebab dia selalu kerja lebih masa! Eh, ikan pun ada jadual kerja sekarang. 😆" },
+      { emoji:"🍌", q:"Kenapa pisang pakai telefon?", a:["Nak telefon doktor","Nak ambil gambar","Nak hubungi kawan se-buah","Sebab telefon itu sedap"], correct:2, joke:"Dia nak hubungi kawan se-buah! Jangan tanya nombor pisang pula. 😂" },
+      { emoji:"🧹", q:"Apa benda yang ada banyak gigi tetapi tak boleh makan?", a:["Harimau","Sikat","Buaya","Nenek"], correct:1, joke:"Sikat! Giginya banyak, tapi nasi lemak pun dia tak boleh kunyah. 😁" },
+      { emoji:"🐘", q:"Kenapa gajah tak guna komputer kecil?", a:["Tak suka warna komputer","Tak pandai tekan butang","Skrinnya terlalu kecil untuk belalainya","Komputer itu tidur"], correct:2, joke:"Skrinnya kecil sangat untuk belalai! Susah nak klik, kena guna mod gajah. 🐘" },
+      { emoji:"🌧️", q:"Bila hujan, apa yang naik tetapi tak pernah turun?", a:["Harga ais krim","Payung yang dibuka","Belon","Umur kita"], correct:3, joke:"Umur kita! Setiap hari kita makin tua, walaupun hati rasa masih tadika. 😜" },
+      { emoji:"🐔", q:"Kenapa ayam melintas jalan?", a:["Nak pergi seberang","Nak beli kasut","Nak naik bas","Nak cari Wi-Fi"], correct:0, joke:"Nak pergi seberanglah! Ayam pun ada urusan sendiri. Jangan sibuk sangat. 🐔" },
+      { emoji:"📚", q:"Buku apa yang tak boleh dibaca?", a:["Buku cerita","Buku latihan","Buku lali","Buku sains"], correct:2, joke:"Buku lali! Kalau cuba baca, nanti orang tanya kenapa tengok kaki. 🤭" },
+      { emoji:"🧊", q:"Apa yang jadi lebih basah apabila mengeringkan sesuatu?", a:["Tuala","Batu","Kertas","Bantal"], correct:0, joke:"Tuala! Dia yang bekerja keras, tapi dia pula yang basah. Tak adil betul. 🧼" },
+      { emoji:"🐱", q:"Kucing apa yang paling kuat matematik?", a:["Kucing oren","Kucing yang belajar sifir","Kucing tidur","Kucing belang"], correct:1, joke:"Kucing yang belajar sifir! Meow-thematics, faham? 😹" },
+      { emoji:"🥚", q:"Apa yang pecah sebelum kita boleh makan isinya?", a:["Pinggan","Telur","Meja","Sudu"], correct:1, joke:"Telur! Kalau pinggan yang pecah, sarapan terus jadi kerja mengemas. 🍳" }
+    ];
+
+    const home = document.getElementById("home");
+    const quiz = document.getElementById("quiz");
+    const result = document.getElementById("result");
+    const counter = document.getElementById("counter");
+    const scorePill = document.getElementById("scorePill");
+    const progress = document.getElementById("progress");
+    const qEmoji = document.getElementById("qEmoji");
+    const questionText = document.getElementById("questionText");
+    const answers = document.getElementById("answers");
+    const feedback = document.getElementById("feedback");
+    const nextBtn = document.getElementById("nextBtn");
+
+    let order = [], current = 0, score = 0, answered = false;
+
+    function shuffle(items) {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+    function showScreen(screen) {
+      [home, quiz, result].forEach(el => el.classList.add("hidden"));
+      screen.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function startQuiz() {
+      order = shuffle(questions);
+      current = 0;
+      score = 0;
+      showScreen(quiz);
+      renderQuestion();
+    }
+    function renderQuestion() {
+      answered = false;
+      const item = order[current];
+      counter.textContent = `SOALAN ${current + 1} / ${order.length}`;
+      scorePill.textContent = `⭐ ${score} mata`;
+      progress.style.width = `${(current / order.length) * 100}%`;
+      qEmoji.textContent = item.emoji;
+      questionText.textContent = item.q;
+      answers.replaceChildren();
+      feedback.hidden = true;
+      nextBtn.classList.add("hidden");
+
+      const choices = item.a.map((label, index) => ({ label, originalIndex: index }));
+      choices.forEach((choice, i) => {
+        const btn = document.createElement("button");
+        btn.className = "answer";
+        btn.type = "button";
+        btn.innerHTML = `<span class="letter">${String.fromCharCode(65 + i)}</span>`;
+        btn.append(document.createTextNode(choice.label));
+        btn.addEventListener("click", () => chooseAnswer(choice.originalIndex, btn));
+        answers.appendChild(btn);
+      });
+    }
+    function chooseAnswer(selected, clickedButton) {
+      if (answered) return;
+      answered = true;
+      const item = order[current];
+      const buttons = [...answers.querySelectorAll("button")];
+      buttons.forEach(btn => btn.disabled = true);
+      // Find the displayed option by its text, so the correct highlight matches the shuffled question order.
+      buttons.forEach(btn => {
+        const label = btn.textContent.replace(/^[A-D]/, "").trim();
+        if (label === item.a[item.correct]) btn.classList.add("correct");
+      });
+      const selectedLabel = clickedButton.textContent.replace(/^[A-D]/, "").trim();
+      if (selectedLabel === item.a[item.correct]) {
+        score++;
+        clickedButton.classList.add("correct");
+        feedback.textContent = `🎉 Betul! ${item.joke}`;
+      } else {
+        clickedButton.classList.add("wrong");
+        feedback.textContent = `😜 Belum tepat! Jawapan: ${item.a[item.correct]}. ${item.joke}`;
+      }
+      scorePill.textContent = `⭐ ${score} mata`;
+      progress.style.width = `${((current + 1) / order.length) * 100}%`;
+      feedback.hidden = false;
+      nextBtn.textContent = current === order.length - 1 ? "LIHAT KEPUTUSAN 🏆" : "SOALAN SETERUSNYA ➜";
+      nextBtn.classList.remove("hidden");
+    }
+    function showResult() {
+      showScreen(result);
+      const total = order.length;
+      document.getElementById("finalScore").textContent = `${score}/${total}`;
+      let emoji, title, text;
+      if (score === total) {
+        emoji = "👑"; title = "Raja/Ratu Teka-Teki!"; text = "Semua betul! Otak anda sedang buat tarian kemenangan.";
+      } else if (score >= 7) {
+        emoji = "🏆"; title = "Juara Gelak!"; text = "Hebat! Anda memang pantas jadi ketua kelab lawak.";
+      } else if (score >= 4) {
+        emoji = "🦄"; title = "Bintang Lawak!"; text = "Bagus! Teruskan berlatih, pelawak kecil.";
+      } else {
+        emoji = "🐣"; title = "Anak Ayam Bijak!"; text = "Tak mengapa. Cuba lagi, sebab gelak pun satu kemenangan!";
+      }
+      document.getElementById("resultEmoji").textContent = emoji;
+      document.getElementById("resultTitle").textContent = title;
+      document.getElementById("resultText").textContent = text;
+      document.getElementById("rankText").textContent = `Anda menjawab ${score} daripada ${total} soalan dengan betul.`;
+      document.getElementById("shareText").textContent = `Saya dapat ${score}/${total} dalam Kuiz Jom Gelak! Gelaran saya: ${title} 😆`;
+    }
+    async function shareResult() {
+      const text = document.getElementById("shareText").textContent;
+      if (navigator.share) {
+        try { await navigator.share({ title: "Kuiz Jom Gelak!", text }); } catch (err) {
+          if (err.name !== "AbortError") copyResult(text);
+        }
+      } else {
+        copyResult(text);
+      }
+    }
+    async function copyResult(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        document.getElementById("shareText").textContent = "Keputusan disalin! Boleh tampal dalam WhatsApp. 😄";
+      } catch {
+        window.prompt("Salin keputusan ini:", text);
+      }
+    }
+
+    document.getElementById("startBtn").addEventListener("click", startQuiz);
+    nextBtn.addEventListener("click", () => {
+      if (current < order.length - 1) { current++; renderQuestion(); }
+      else showResult();
+    });
+    document.getElementById("restartBtn").addEventListener("click", startQuiz);
+    document.getElementById("shareBtn").addEventListener("click", shareResult);
+  </script>
+</body>
+</html>
